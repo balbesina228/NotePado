@@ -8,5 +8,8 @@ class Notes(models.Model):
     time_update = models.DateTimeField(auto_now=True)
     completed = models.BooleanField(default=False)
 
-    def __str__(self):
+    def get_title(self):
         return self.title
+
+    def get_data(self):
+        return self.title, self.content, self.time_create, self.time_update, self.completed

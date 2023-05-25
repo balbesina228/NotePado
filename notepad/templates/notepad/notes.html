@@ -1,0 +1,10 @@
+{% extends 'notepad/base.html' %}
+{% block title %}NotePado - Notes{% endblock %}
+
+{% block content %}
+  <h1>Все записи</h1>
+{% for note in notes %}
+  <p><h3>{{ note.title }} - {{ note.time_create }} - {{ note.time_update }}</h3></p>
+  <p>{{ note.content }}</p>
+{% endfor %}
+{% endblock %}

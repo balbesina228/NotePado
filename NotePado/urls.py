@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from notepad.views import index, page_not_found
+from notepad.views import all_notes, page_not_found
 
 urlpatterns = [
     path('admin/', admin.site.urls),
