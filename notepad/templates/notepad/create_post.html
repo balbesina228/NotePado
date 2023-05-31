@@ -1,0 +1,12 @@
+{% extends 'notepad/base.html' %}
+{% block title %}NotePado - Create Post{% endblock %}
+
+{% block content %}
+
+<div class="form-error">{{ form.non_field_errors }}</div>
+<form action="{% url 'create_post' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Создать!</button>
+</form>
+{% endblock %}

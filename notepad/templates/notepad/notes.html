@@ -4,7 +4,8 @@
 {% block content %}
   <h1>Все записи</h1>
 {% for note in notes %}
-  <p><h3>{{ note.title }} - {{ note.time_create }} - {{ note.time_update }}</h3></p>
+  <p><h3>{{ note.title }}</h3>
+  Создан: {{ note.time_create|date:"d M Y H:i" }} - Ред.: {{ note.time_update|date:"d M Y H:i" }}</p>
   <p>{{ note.content }}</p>
 {% endfor %}
 {% endblock %}

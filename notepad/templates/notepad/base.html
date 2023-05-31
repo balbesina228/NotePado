@@ -20,16 +20,16 @@
         <a class="nav-link" href="{% url 'notes' %}">Notes</a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" role="button" href="#" data-bs-toggle="dropdown" aria-expanded="false">Sign in</a>
+        <a class="nav-link dropdown-toggle" role="button" href="#" data-bs-toggle="dropdown" aria-expanded="false">Log in?</a>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Login</a>
+          <a class="dropdown-item" href="#">Sign in</a>
           <a class="dropdown-item" href="#">Register</a>
         </div>
       </li>
     </ul>
 
 
-      <a class="btn btn-outline-success mb-auto ms-auto" href="#">Create post</a> <!-- Ведет на форму, создающую пост -->
+      <a class="btn btn-outline-success mb-auto ms-auto" href="{% url 'create_post' %}">Create post</a> <!-- Ведет на форму, создающую пост -->
 
   </div>
 </nav>

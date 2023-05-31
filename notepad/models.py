@@ -13,3 +13,6 @@ class Notes(models.Model):
 
     def get_data(self):
         return self.title, self.content, self.time_create, self.time_update, self.completed
+
+    def __str__(self):
+        return self.time_update.strftime("%d.%m.%Y %H:%M"), self.time_create.strftime("%H:%M")
