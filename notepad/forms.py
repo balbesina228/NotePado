@@ -8,6 +8,6 @@ class CreatePost(forms.ModelForm):
         model = Notes
         fields = ['title', 'content']
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-input'}),
-            'content': forms.Textarea(attrs={'cols': 50, 'rows': 5})
+            'title': forms.TextInput(attrs={'class': 'form-control form-control-lg', 'placeholder': "Don't forget to create a title!"}),
+            'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Here will be your post'})
         }
