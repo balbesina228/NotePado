@@ -1,7 +1,7 @@
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 
-from notepad.forms import CreatePost
+from notepad.forms import CreatePost, UploadImage
 from notepad.models import Notes
 
 
@@ -17,7 +17,8 @@ def all_notes(request):
         'content': 'content',
         'time_create': 'time_create',
         'time_update': 'time_update',
-        'completed': 'completed'
+        'completed': 'completed',
+        'image': 'image'
     }
     return render(request, 'notepad/notes.html', context=context)
 
@@ -36,5 +37,10 @@ def create_post(request):
     return render(request, 'notepad/create_post.html', {'form': form})
 
 
+def note(request):
+    context = {
+
+    }
+    return render(request, 'notepad/note.html', context=context)
 def page_not_found(request, exception):
     return HttpResponseNotFound('Page not found!')

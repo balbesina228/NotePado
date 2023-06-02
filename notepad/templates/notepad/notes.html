@@ -8,4 +8,7 @@
   Создан: {{ note.time_create|date:"d M Y H:i" }} - Ред.: {{ note.time_update|date:"d M Y H:i" }}</p>
   <p>{{ note.content }}</p>
 {% endfor %}
+{% if p.image %}
+	<p><img class="img-article-left thumb" src="{{p.image.url}}"></p>
+{% endif %}
 {% endblock %}
