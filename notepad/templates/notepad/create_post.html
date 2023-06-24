@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="form-error">{{ form.non_field_errors }}</div>
-<form action="{% url 'create_post' %}" method="post">
+<form action="{% url 'create_post' %}" method="post" enctype="multipart/form-data">
   <div class="form-group">
     <div class="col-sm-5">
     {% csrf_token %}

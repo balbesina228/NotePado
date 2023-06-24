@@ -7,8 +7,8 @@
   <p><h3>{{ note.title }}</h3>
   Создан: {{ note.time_create|date:"d M Y H:i" }} - Ред.: {{ note.time_update|date:"d M Y H:i" }}</p>
   <p>{{ note.content }}</p>
-{% endfor %}
-{% if p.image %}
-	<p><img class="img-article-left thumb" src="{{p.image.url}}"></p>
+  {% if note.image %}
+	  <p><img width="100px" height="100px" src="{{note.image.url}}"></p>
 {% endif %}
+{% endfor %}
 {% endblock %}

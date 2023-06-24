@@ -25,7 +25,7 @@ def all_notes(request):
 
 def create_post(request):
     if request.method == 'POST':
-        form = CreatePost(request.POST)
+        form = CreatePost(request.POST, request.FILES)
         if form.is_valid():
             try:
                 form.save()
@@ -38,8 +38,15 @@ def create_post(request):
 
 
 def note(request):
+    notes = Notes.objects.all().order_by('time_create')
     context = {
-
+        'notes': notes,
+        'title': 'title',
+        'content': 'content',
+        'time_create': 'time_create',
+        'time_update': 'time_update',
+        'completed': 'completed',
+        'image': 'image'
     }
     return render(request, 'notepad/note.html', context=context)
 def page_not_found(request, exception):
