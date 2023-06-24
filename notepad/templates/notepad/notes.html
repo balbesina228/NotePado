@@ -5,10 +5,12 @@
   <h1>Все записи</h1>
 {% for note in notes %}
   <p><h3>{{ note.title }}</h3>
-  Создан: {{ note.time_create|date:"d M Y H:i" }} - Ред.: {{ note.time_update|date:"d M Y H:i" }}</p>
-  <p>{{ note.content }}</p>
   {% if note.image %}
-	  <p><img width="100px" height="100px" src="{{note.image.url}}"></p>
-{% endif %}
+	<p><img width="100px" height="100px" src="{{note.image.url}}"></p>
+  {% endif %}
+  <p>{{ note.content|truncatechars:50 }}</p>
+  <p><a href="{{ note.get_absolute_url }}">Читать полностью</a></p>
+  <p style="font-size:60%">Создан: {{ note.time_create|date:"d M Y H:i" }} - Ред.: {{ note.time_update|date:"d M Y H:i" }}</p>
+  <hr style="width:40%">
 {% endfor %}
 {% endblock %}

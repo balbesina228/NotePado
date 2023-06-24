@@ -8,5 +8,5 @@ urlpatterns = [
     path('notes', views.all_notes, name='notes'),
     path('', views.greeting, name='home'),
     path('notes/create_post', views.create_post, name='create_post'),
-    path('notes/<int:id>', views.note, name='note')
+    path('notes/<int:note_id>', views.note, name='note')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

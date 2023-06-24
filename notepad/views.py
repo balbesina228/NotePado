@@ -1,4 +1,4 @@
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponse
 from django.shortcuts import render, redirect
 
 from notepad.forms import CreatePost, UploadImage
@@ -37,10 +37,10 @@ def create_post(request):
     return render(request, 'notepad/create_post.html', {'form': form})
 
 
-def note(request):
-    notes = Notes.objects.all().order_by('time_create')
+def note(request, note_id):
+    post = Notes.objects.get(id=note_id)
     context = {
-        'notes': notes,
+        'note': post,
         'title': 'title',
         'content': 'content',
         'time_create': 'time_create',
