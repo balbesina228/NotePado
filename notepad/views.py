@@ -1,8 +1,12 @@
-from django.http import HttpResponseNotFound, HttpResponse
+from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from notepad.forms import CreatePost, UploadImage
+from notepad.forms import CreatePost, UploadImage, RegisterUserForm
 from notepad.models import Notes
+from notepad.utils import DataMixin
 
 
 def greeting(request):
@@ -49,5 +53,21 @@ def note(request, note_id):
         'image': 'image'
     }
     return render(request, 'notepad/note.html', context=context)
+
+
+def login():
+    pass
+
+
+class RegisterUser(DataMixin, CreateView):
+    form_class = RegisterUserForm
+    template_name = 'notepad/register.html'
+    success_url = reverse_lazy('login')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Register')
+        return dict(list(context.items()) + list(c_def.items()))
+
 def page_not_found(request, exception):
     return HttpResponseNotFound('Page not found!')

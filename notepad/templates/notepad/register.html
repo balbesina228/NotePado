@@ -1,0 +1,13 @@
+{% extends 'notepad/base.html' %}
+{% block content %}
+
+<form method="post">
+  {% csrf_token %}
+  {% for element in form %}
+    <p><label for="{{ element.id_for_label }}">{{ element.label }}:</label>{{ element }}</p>
+    <div class="text-danger">{{ element.errors }}</div>
+  {% endfor %}
+  <button type="submit">Register</button>
+</form>
+
+{% endblock %}

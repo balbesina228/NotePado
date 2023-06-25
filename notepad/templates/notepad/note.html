@@ -18,7 +18,9 @@
 {% block content %}
 <div class="post">
   <h1 align="center">{{ note.title }}</h1>
-  <img src="{{ note.image.url }}">
+  {% if note.image %}
+    <img src="{{ note.image.url }}">
+  {% endif %}
   <p>{{ note.content }}</p>
 </div>
 {% endblock %}

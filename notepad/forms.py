@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 from notepad.models import Notes
 
@@ -14,3 +16,13 @@ class CreatePost(forms.ModelForm):
         }
 class UploadImage(forms.Form):
     image = forms.ImageField()
+
+
+class RegisterUserForm(UserCreationForm):
+    username = forms.CharField(label='Username', widget=forms.TextInput)
+    email = forms.EmailField(label='E-mail', widget=forms.EmailInput)
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Confirm your password', widget=forms.PasswordInput)
+    class Meta:
+        model = User
+        fields = ('username', 'password1', 'password2')
