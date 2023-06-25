@@ -15,7 +15,7 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="{% url 'home' %}" align="left">NotePado</a>
+    <a class="navbar-brand" href="{% url 'home' %}">NotePado</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav">
         <li class="nav-item">
@@ -24,11 +24,17 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'notes' %}">Notes</a>
         </li>
+        <li class="nav-item"><a class="nav-link active">|</a></li>
+        {% if request.user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link active">Hello, {{ user }}!</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Sign out?</a></li>
+        {% else %}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" role="button" href="#" data-bs-toggle="dropdown" aria-expanded="false">Log in?</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="{% url 'login' %}">Sign in</a>
-            <a class="dropdown-item" href="{% url 'register' %}">Register</a>
+            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Sign in?</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'login' %}">Sign in</a>
+              <a class="dropdown-item" href="{% url 'register' %}">Register</a>
+            {% endif %}
           </div>
         </li>
       </ul>
