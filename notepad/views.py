@@ -1,13 +1,14 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseNotFound
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from notepad.forms import CreatePost, RegisterUserForm, LoginUserForm
-from notepad.models import Notes
+from notepad.forms import CreatePost, RegisterUserForm, LoginUserForm, UploadImage
+from notepad.models import Notes, UserPhoto
 from notepad.utils import DataMixin
 
 
@@ -73,6 +74,8 @@ class RegisterUser(DataMixin, CreateView):
 
     def form_valid(self, form):
         user = form.save()
+        photo = UserPhoto.objects.create(user=user, photo='photos/default.png')
+        photo.save()
         login(self.request, user)
         return redirect('home')
 
@@ -94,7 +97,15 @@ def logout_user(request):
 
 @login_required
 def profile(request, username):
-    return render(request, 'notepad/profile.html', context={'username': username})
+    user = get_object_or_404(User, username=username)
+    image = get_object_or_404(UserPhoto, user=user.pk)
+    context = {
+        'user': user,
+        'username': username,
+        'image': image,
+        'email': 'email'
+    }
+    return render(request, 'notepad/profile.html', context=context)
 
 
 def page_not_found(request, exception):

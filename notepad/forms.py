@@ -23,6 +23,7 @@ class RegisterUserForm(UserCreationForm):
     email = forms.EmailField(label='E-mail', widget=forms.EmailInput)
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Confirm your password', widget=forms.PasswordInput)
+    photo = forms.ImageField(label='Photo')
     class Meta:
         model = User
         fields = ('username', 'password1', 'password2')

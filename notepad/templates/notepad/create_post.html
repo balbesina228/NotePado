@@ -3,9 +3,9 @@
 
 {% block content %}
 
-<div class="form-error">{{ form.non_field_errors }}</div>
+<div class="text-danger">{{ form.non_field_errors }}</div>
 <form action="{% url 'create_post' %}" method="post" enctype="multipart/form-data">
-  <div class="form-group">
+  <div class="form-group"> <!-- Поменять классы на Bootstrap -->
     <div class="col-sm-5">
     {% csrf_token %}
     {{ form.as_p }}
