@@ -1,0 +1,6 @@
+{% extends 'notepad/base.html' %}
+{% block title %}{{ username }} - NotePado{% endblock %}
+{% block content %}
+<h1>This is {{ username }}'s profile</h1>
+{{ user }}(user) ?= {{ username }}(profile)
+{% endblock %}

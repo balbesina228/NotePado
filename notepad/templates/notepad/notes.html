@@ -4,7 +4,7 @@
 {% block content %}
   <h1>Все записи</h1>
 {% for note in notes %}
-  <p><h3>{{ note.title }}</h3>
+  <p><h3>{{ note.title }} - <a href="{{ note.get_owner_url }}">{{ note.owner }}</a></h3>
   {% if note.image %}
 	<p><img width="100px" height="100px" src="{{note.image.url}}"></p>
   {% endif %}
