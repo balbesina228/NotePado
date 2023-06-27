@@ -5,6 +5,5 @@
 {% if username == user.username %}
   <p><a href="{% url 'edit-profile' username %}">EDIT</a></p>
 {% endif %}
-<p>{{ user.username }} (user) ?= {{ username }} (profile)</p>
 <p><img src="{{ image.photo.url }}"></p>
 {% endblock %}

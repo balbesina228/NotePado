@@ -28,18 +28,18 @@ class RegisterUserForm(UserCreationForm):
         fields = ('username', 'password1', 'password2')
 
 
-class EditUserFormNoPassword(UserChangeForm):
+class EditUserForm(UserChangeForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields.pop('password')
 
     username = forms.CharField(label='Username', widget=forms.TextInput)
-    email = forms.EmailField(label='E-mail', widget=forms.EmailInput)
-    photo = forms.ImageField(label='Photo', widget=forms.FileInput)
+    email = forms.EmailField(label='E-mail', widget=forms.EmailInput, required=False)
+    photo = forms.ImageField(label='Photo', widget=forms.FileInput, required=False)
 
     class Meta:
         model = User
-        fields = ('username', 'email')
+        fields = ('username', 'email', 'photo', 'password')
 
 
 class LoginUserForm(AuthenticationForm):

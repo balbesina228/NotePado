@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from notepad.forms import CreatePost, RegisterUserForm, LoginUserForm, EditUserFormNoPassword, UploadImage
+from notepad.forms import CreatePost, RegisterUserForm, LoginUserForm, EditUserForm
 from notepad.models import Notes, UserPhoto
 from notepad.utils import DataMixin
 
@@ -18,7 +18,7 @@ def greeting(request):
 
 
 def all_notes(request):
-    notes = Notes.objects.all().order_by('time_create')
+    notes = Notes.objects.all().order_by('-time_create')
     context = {
         'notes': notes,
         'title': 'title',
@@ -113,21 +113,23 @@ def edit_profile(request, username):
     user = request.user
     profile = User.objects.get(username=username)
     image = get_object_or_404(UserPhoto, user=user.pk)
-    print(request.user, user.username, username)
     if str(user) != str(username):
         return page_not_found(request, 404)
 
     if request.method == 'POST':
-        form = EditUserFormNoPassword(request.POST, request.FILES, instance=profile)
+        form = EditUserForm(request.POST, request.FILES, instance=profile)
 
-        if form.is_valid:
+        if form.is_valid():
             form.save()
-            new_image = form.cleaned_data['photo']
-            image.photo.save(new_image.name, File(new_image))
-            return redirect('home')
+            if form.cleaned_data['photo']:
+                new_image = form.cleaned_data['photo']
+                image.photo.save(new_image.name, File(new_image))
+            else:
+                image.photo = image.photo
+            return redirect('profile', username=username)
 
     else:
-        form = EditUserFormNoPassword(instance=profile)
+        form = EditUserForm(instance=profile)
 
     context = {
         'form': form

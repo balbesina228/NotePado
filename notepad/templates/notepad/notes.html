@@ -6,7 +6,7 @@
 {% for note in notes %}
   <p><h3>{{ note.title }} - <a href="{{ note.get_owner_url }}">{{ note.owner }}</a></h3>
   {% if note.image %}
-	<p><img width="100px" height="100px" src="{{note.image.url}}"></p>
+	<p><img style="max-width: 200px; max-height: auto" src="{{note.image.url}}"></p>
   {% endif %}
   <p>{{ note.content|truncatechars:50 }}</p>
   <p><a href="{{ note.get_absolute_url }}">Читать полностью</a></p>

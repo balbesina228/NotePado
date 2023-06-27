@@ -1,11 +1,12 @@
 {% extends 'notepad/base.html' %}
 {% block title %}Edit profile - {{ user }} - NotePado{% endblock %}
 {% block content %}
-<p>{{ user }} - user (editing)</p>
-<p>{{ username }} - username (edited)</p>
 <form method="post" enctype="multipart/form-data">
   {% csrf_token %}
-  {{ form.as_p }}
+  {% for element in form %}
+    <p><label for="{{ element.id_for_label }}">{{ element.label }}:</label>{{ element }}</p>
+    <div class="text-danger">{{ element.errors }}</div>
+  {% endfor %}
   <button type="submit">Save changes</button>
 </form>
 {% endblock %}

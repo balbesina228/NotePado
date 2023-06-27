@@ -11,6 +11,11 @@
         max-width: 450px;
         max-height: auto;
         }
+        img.pos {
+        position: relative;
+        left: 50%;
+        transform: translate(-50%);
+        }
     </style>
 </head>
 {% extends "notepad/base.html" %}
@@ -19,8 +24,8 @@
 <div class="post">
   <h1 align="center">{{ note.title }}</h1>
   {% if note.image %}
-    <img src="{{ note.image.url }}">
+    <img class="pos" src="{{ note.image.url }}">
   {% endif %}
-  <p>{{ note.content }}</p>
+  <p>{{ note.content|linebreaks }}</p>
 </div>
 {% endblock %}
