@@ -2,7 +2,7 @@
 {% block title %}Register - NotePado{% endblock %}
 {% block content %}
 
-<form method="post" enctype="multipart/form-data">
+<form method="post">
   {% csrf_token %}
   {% for element in form %}
     <p><label for="{{ element.id_for_label }}">{{ element.label }}:</label>{{ element }}</p>

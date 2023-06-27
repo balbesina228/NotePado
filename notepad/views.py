@@ -101,7 +101,6 @@ def profile(request, username):
     user = get_object_or_404(User, username=username)
     image = get_object_or_404(UserPhoto, user=user.pk)
     context = {
-        'user': user,
         'username': username,
         'image': image,
         'email': 'email'
@@ -114,6 +113,9 @@ def edit_profile(request, username):
     user = request.user
     profile = User.objects.get(username=username)
     image = get_object_or_404(UserPhoto, user=user.pk)
+    print(request.user, user.username, username)
+    if str(user) != str(username):
+        return page_not_found(request, 404)
 
     if request.method == 'POST':
         form = EditUserFormNoPassword(request.POST, request.FILES, instance=profile)
