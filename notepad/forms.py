@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django.contrib.auth.models import User
 
 from notepad.models import Notes
@@ -27,6 +27,20 @@ class RegisterUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'password1', 'password2')
+
+
+class EditUserFormNoPassword(UserChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields.pop('password')
+
+    username = forms.CharField(label='Username', widget=forms.TextInput)
+    email = forms.EmailField(label='E-mail', widget=forms.EmailInput)
+    photo = forms.ImageField(label='Photo', widget=forms.FileInput)
+
+    class Meta:
+        model = User
+        fields = ('username', 'email')
 
 
 class LoginUserForm(AuthenticationForm):

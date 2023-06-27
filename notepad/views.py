@@ -2,12 +2,13 @@ from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
+from django.core.files import File
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from notepad.forms import CreatePost, RegisterUserForm, LoginUserForm, UploadImage
+from notepad.forms import CreatePost, RegisterUserForm, LoginUserForm, EditUserFormNoPassword, UploadImage
 from notepad.models import Notes, UserPhoto
 from notepad.utils import DataMixin
 
@@ -106,6 +107,30 @@ def profile(request, username):
         'email': 'email'
     }
     return render(request, 'notepad/profile.html', context=context)
+
+
+@login_required
+def edit_profile(request, username):
+    user = request.user
+    profile = User.objects.get(username=username)
+    image = get_object_or_404(UserPhoto, user=user.pk)
+
+    if request.method == 'POST':
+        form = EditUserFormNoPassword(request.POST, request.FILES, instance=profile)
+
+        if form.is_valid:
+            form.save()
+            new_image = form.cleaned_data['photo']
+            image.photo.save(new_image.name, File(new_image))
+            return redirect('home')
+
+    else:
+        form = EditUserFormNoPassword(instance=profile)
+
+    context = {
+        'form': form
+    }
+    return render(request, 'notepad/edit-profile.html', context=context)
 
 
 def page_not_found(request, exception):
