@@ -32,6 +32,7 @@ def all_notes(request):
     return render(request, 'notepad/notes.html', context=context)
 
 
+@login_required
 def create_post(request):
     if request.method == 'POST':
         form = CreatePost(request.POST, request.FILES)
@@ -47,6 +48,7 @@ def create_post(request):
         form = CreatePost()
     return render(request, 'notepad/create_post.html', {'form': form})
 
+
 @login_required
 def edit_post(request, note_id):
     note = get_object_or_404(Notes, id=note_id)
@@ -55,7 +57,6 @@ def edit_post(request, note_id):
     if request.method == 'POST':
         form = EditPost(request.POST, request.FILES, instance=note)
         if form.is_valid():
-            note.image = request.FILES['image']
             form.save()
             return redirect('note', note_id=note_id)
     else:
@@ -67,6 +68,7 @@ def edit_post(request, note_id):
     return render(request, 'notepad/edit_post.html', context=context)
 
 
+@login_required
 def delete_post(request, note_id):
     note = get_object_or_404(Notes, id=note_id)
     if request.user != note.owner:
@@ -133,9 +135,11 @@ def logout_user(request):
 def profile(request, username):
     user = get_object_or_404(User, username=username)
     image = get_object_or_404(UserPhoto, user=user.pk)
+    notes = Notes.objects.filter(owner=user.id)
     context = {
         'username': username,
         'image': image,
+        'notes': notes,
         'email': 'email'
     }
     return render(request, 'notepad/profile.html', context=context)
