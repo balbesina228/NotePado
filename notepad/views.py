@@ -74,8 +74,11 @@ def delete_post(request, note_id):
     if request.method == "POST":
         note.delete()
         return redirect('notes')
+    context = {
+        'note': note
+    }
 
-    return render(request, 'notepad/delete_post.html')
+    return render(request, 'notepad/delete_post.html', context=context)
 
 
 def note(request, note_id):
