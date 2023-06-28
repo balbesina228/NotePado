@@ -1,2 +1,2 @@
 # NotePado
-It will be social media with registration, login/logout, profile, posts, likes, shares to your profile and comments.
+It will be social media with registration, login/logout, profile  (with editing), posts (create/edit/delete), likes, comments.
