@@ -21,6 +21,10 @@
 {% extends "notepad/base.html" %}
 {% block title %}{{ note.title }} - NotePado{% endblock %}
 {% block content %}
+{% if note.owner == user %}
+<p><a href="{% url 'edit-post' note.id %}">EDIT POST</a></p>
+{% endif %}
+<p>{{ note.owner }}, {{ user }}</p>
 <div class="post">
   <h1 align="center">{{ note.title }}</h1>
   {% if note.image %}

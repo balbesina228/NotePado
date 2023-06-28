@@ -3,12 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.core.files import File
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from notepad.forms import CreatePost, RegisterUserForm, LoginUserForm, EditUserForm
+from notepad.forms import CreatePost, RegisterUserForm, LoginUserForm, EditUserForm, EditPost
 from notepad.models import Notes, UserPhoto
 from notepad.utils import DataMixin
 
@@ -46,6 +46,24 @@ def create_post(request):
     else:
         form = CreatePost()
     return render(request, 'notepad/create_post.html', {'form': form})
+
+
+def edit_post(request, note_id):
+    note = Notes.objects.get(id=note_id)
+    if request.user != note.owner:
+        raise HttpResponseForbidden
+    if request.method == 'POST':
+        form = EditPost(request.POST, request.FILES, instance=note)
+        if form.is_valid():
+            form.save()
+            return redirect('note', note_id=note_id)
+    else:
+        form = EditPost(instance=note)
+    context = {
+        'form': form,
+        'note_id': note_id
+    }
+    return render(request, 'notepad/edit_post.html', context=context)
 
 
 def note(request, note_id):
@@ -114,7 +132,7 @@ def edit_profile(request, username):
     profile = User.objects.get(username=username)
     image = get_object_or_404(UserPhoto, user=user.pk)
     if str(user) != str(username):
-        return page_not_found(request, 404)
+        raise HttpResponseForbidden
 
     if request.method == 'POST':
         form = EditUserForm(request.POST, request.FILES, instance=profile)
