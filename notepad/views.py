@@ -47,14 +47,15 @@ def create_post(request):
         form = CreatePost()
     return render(request, 'notepad/create_post.html', {'form': form})
 
-
+@login_required
 def edit_post(request, note_id):
-    note = Notes.objects.get(id=note_id)
+    note = get_object_or_404(Notes, id=note_id)
     if request.user != note.owner:
         raise HttpResponseForbidden
     if request.method == 'POST':
         form = EditPost(request.POST, request.FILES, instance=note)
         if form.is_valid():
+            note.image = request.FILES['image']
             form.save()
             return redirect('note', note_id=note_id)
     else:
@@ -64,6 +65,17 @@ def edit_post(request, note_id):
         'note_id': note_id
     }
     return render(request, 'notepad/edit_post.html', context=context)
+
+
+def delete_post(request, note_id):
+    note = get_object_or_404(Notes, id=note_id)
+    if request.user != note.owner:
+        raise HttpResponseForbidden
+    if request.method == "POST":
+        note.delete()
+        return redirect('notes')
+
+    return render(request, 'notepad/delete_post.html')
 
 
 def note(request, note_id):
@@ -152,7 +164,7 @@ def edit_profile(request, username):
     context = {
         'form': form
     }
-    return render(request, 'notepad/edit-profile.html', context=context)
+    return render(request, 'notepad/edit_profile.html', context=context)
 
 
 def page_not_found(request, exception):
