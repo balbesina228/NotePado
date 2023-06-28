@@ -33,4 +33,14 @@ class UserPhoto(models.Model):
     photo = models.ImageField(upload_to="photos/", default="photos/default.png")
 
     def __str__(self):
-        return self.user
+        return self.user.username
+
+
+class Comment(models.Model):
+    note = models.ForeignKey(Notes, on_delete=models.CASCADE)
+    text = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(UserPhoto, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.text

@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from notepad.forms import CreatePost, RegisterUserForm, LoginUserForm, EditUserForm, EditPost
-from notepad.models import Notes, UserPhoto
+from notepad.models import Notes, UserPhoto, Comment
 from notepad.utils import DataMixin
 
 
@@ -26,7 +26,6 @@ def all_notes(request):
         'content': 'content',
         'time_create': 'time_create',
         'time_update': 'time_update',
-        'completed': 'completed',
         'image': 'image'
     }
     return render(request, 'notepad/notes.html', context=context)
@@ -85,15 +84,17 @@ def delete_post(request, note_id):
 
 def note(request, note_id):
     post = Notes.objects.get(id=note_id)
+    comments = Comment.objects.filter(note=post).order_by('-date_added')
     context = {
         'note': post,
+        'comments': comments,
         'owner': 'owner',
         'title': 'title',
         'content': 'content',
         'time_create': 'time_create',
         'time_update': 'time_update',
-        'completed': 'completed',
-        'image': 'image'
+        'image': 'image',
+        'photo': 'photo'
     }
     return render(request, 'notepad/note.html', context=context)
 
@@ -135,7 +136,7 @@ def logout_user(request):
 def profile(request, username):
     user = get_object_or_404(User, username=username)
     image = get_object_or_404(UserPhoto, user=user.pk)
-    notes = Notes.objects.filter(owner=user.id)
+    notes = Notes.objects.filter(owner=user.id).order_by('-time_update')
     context = {
         'username': username,
         'image': image,
