@@ -1,0 +1,12 @@
+{% extends 'notepad/base.html' %}
+{% block title %}NotePado - New Comment{% endblock %}
+
+{% block content %}
+
+<div class="text-danger">{{ form.non_field_errors }}</div>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Send</button>
+</form>
+{% endblock %}

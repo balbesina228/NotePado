@@ -32,12 +32,16 @@
   {% endif %}
   <p>{{ note.content|linebreaks }}</p>
   <ul><h3 align="center">Comments:</h3>
+    <p><a href="{% url 'create-comment' note.id %}"><button>Write a new comment?</button></a></p>
     {% if not comments %}
       <h4 align="center">There are no comments yet!</h4>
     {% else %}
       {% for comment in comments %}
-        <li>{% if comment.owner.photo %}<img width="50px" height="50px" style="border:2px solid" src="{{ comment.owner.photo.url }}">{% endif %}
-          <h6>{{ comment.owner.user.username }}</h6>
+        <li>
+          {% if comment.owner.photo %}
+            <img width="50px" height="50px" style="border:2px solid" src="{{ comment.owner.photo.url }}">
+          {% endif %}
+          <a href="{% url 'profile' comment.owner.username %}"><h6>{{ comment.owner.username }}</h6></a>
           <p>{{ comment.text }}</p>
         </li>
         <hr>

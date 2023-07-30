@@ -10,6 +10,7 @@ urlpatterns = [
     path('notes/create_post', views.create_post, name='create_post'),
     path('notes/<int:note_id>', views.note, name='note'),
     path('notes/<int:note_id>/edit-post', views.edit_post, name='edit-post'),
+    path('notes/<int:note_id>/create-comment', views.create_comment, name='create-comment'),
     path('notes/<int:note_id>/delete-post', views.delete_post, name='delete-post'),
     path('login/', views.LoginUser.as_view(), name='login'),
     path('logout/', views.logout_user, name='logout'),

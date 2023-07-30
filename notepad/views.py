@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from notepad.forms import CreatePost, RegisterUserForm, LoginUserForm, EditUserForm, EditPost
+from notepad.forms import CreatePost, RegisterUserForm, LoginUserForm, EditUserForm, EditPost, CreateComment
 from notepad.models import Notes, UserPhoto, Comment
 from notepad.utils import DataMixin
 
@@ -42,7 +42,7 @@ def create_post(request):
                 new_note.save()
                 return redirect('notes')
             except:
-                form.add_error(None, 'Ошибка добавления поста')
+                form.add_error(None, 'Error during adding your post')
     else:
         form = CreatePost()
     return render(request, 'notepad/create_post.html', {'form': form})
@@ -82,9 +82,11 @@ def delete_post(request, note_id):
     return render(request, 'notepad/delete_post.html', context=context)
 
 
+@login_required
 def note(request, note_id):
-    post = Notes.objects.get(id=note_id)
+    post = get_object_or_404(Notes, id=note_id)
     comments = Comment.objects.filter(note=post).order_by('-date_added')
+
     context = {
         'note': post,
         'comments': comments,
@@ -173,6 +175,27 @@ def edit_profile(request, username):
         'form': form
     }
     return render(request, 'notepad/edit_profile.html', context=context)
+
+
+@login_required
+def create_comment(request, note_id):
+    post = get_object_or_404(Notes, id=note_id)
+    if request.method == 'POST':
+        form = CreateComment(request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.owner = request.user
+            new_comment.note = post
+            new_comment.save()
+            return redirect('note', note_id=note_id)
+    else:
+        form = CreateComment()
+
+    context = {
+        'form': form,
+        'user': request.user
+    }
+    return render(request, 'notepad/new_comment.html', context=context)
 
 
 def page_not_found(request, exception):
